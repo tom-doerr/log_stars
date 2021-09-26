@@ -27,7 +27,7 @@ def plot_stars(data, filename=None):
 
     df['Time'] = pd.to_datetime(df['Time'])
 
-    plt.plot(df['Time'], df['Stars'])
+    plt.plot(df['Time'], df['Stars'], '-o')
 
     plt.xlabel('Time')
     plt.ylabel('Stars')
