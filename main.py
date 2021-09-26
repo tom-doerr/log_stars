@@ -23,7 +23,7 @@ def get_stars(repo, auth=None):
     resp = requests.get(url, auth=auth)
     if resp.status_code != 200:
         print('ERROR: Could not get stars for ' + repo)
-        return 0
+        return None
     return int(resp.json()['stargazers_count'])
 
 def get_repos(file):
@@ -41,14 +41,15 @@ def write_csv(repos, interval):
     Writes the number of stars for each repository
     to a csv file
     '''
-    file_exists = os.path.isfile(CSV_FILENAME)
     while True:
+        file_exists = os.path.isfile(CSV_FILENAME)
         with open(CSV_FILENAME, 'a') as f:
             if not file_exists:
                 f.write('Time,Repo,Stars\n')
             for repo in repos:
                 stars = get_stars(repo)
-                f.write('{},{},{}\n'.format(datetime.now(), repo, stars))
+                if stars != None:
+                    f.write('{},{},{}\n'.format(datetime.now(), repo, stars))
 
         time.sleep(interval)
 
