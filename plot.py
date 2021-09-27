@@ -50,9 +50,13 @@ def plot_stars(data, filename=None):
 
     num_stars_last_hour = get_num_stars_last_x_hours(1)
     num_stars_last_5_hours_per_hour = get_num_stars_last_x_hours(5)
+    current_num_stars = df['Stars'].iloc[-1]
 
-    print(f'{num_stars_last_hour:.0f} stars in the last hour, {num_stars_last_5_hours_per_hour:.0f} stars per hour on average')
-
+    print()
+    # print all with the number at the beginning and the label at the end.
+    print(f"{num_stars_last_hour:.0f} stars/hour")
+    print(f"{num_stars_last_5_hours_per_hour:.0f} stars/hour over five hours")
+    print(f"{current_num_stars:.0f} stars now")
 
 
     plt.plot(df['Time'], df['Stars'], '-o')
