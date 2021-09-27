@@ -27,6 +27,40 @@ def plot_stars(data, filename=None):
 
     df['Time'] = pd.to_datetime(df['Time'])
 
+
+    datapoints_last_hour = df[df['Time'] > datetime. now() - pd.Timedelta('1h')]
+    datapoints_last_hour_oldest = datapoints_last_hour['Time'].min()
+    # Get star value for the oldest datapoint.
+    datapoints_last_hour_oldest_value = datapoints_last_hour[
+        datapoints_last_hour['Time'] == datapoints_last_hour_oldest]['Stars'].iloc[0]
+
+    datapoints_last_hour_newest = datapoints_last_hour['Time'].max()
+    # Get star value for the newest datapoint.
+    datapoints_last_hour_newest_value = datapoints_last_hour[
+        datapoints_last_hour['Time'] == datapoints_last_hour_newest]['Stars'].iloc[0]
+
+    num_stars_last_hour = datapoints_last_hour_newest_value - \
+        datapoints_last_hour_oldest_value
+
+
+    datapoints_last_5_hours_per_hour_oldest = df[df['Time'] > datetime. now() - pd.Timedelta('5h')]
+    datapoints_last_5_hours_per_hour_oldest_oldest = datapoints_last_5_hours_per_hour_oldest['Time'].min()
+    # Get star value for the oldest datapoint.
+    datapoints_last_5_hours_per_hour_oldest_oldest_value = datapoints_last_5_hours_per_hour_oldest[
+        datapoints_last_5_hours_per_hour_oldest['Time'] == datapoints_last_5_hours_per_hour_oldest_oldest]['Stars'].iloc[0]
+
+    datapoints_last_5_hours_per_hour_oldest_newest = datapoints_last_5_hours_per_hour_oldest['Time'].max()
+    # Get star value for the newest datapoint.
+    datapoints_last_5_hours_per_hour_oldest_newest_value = datapoints_last_5_hours_per_hour_oldest[
+        datapoints_last_5_hours_per_hour_oldest['Time'] == datapoints_last_5_hours_per_hour_oldest_newest]['Stars'].iloc[0]
+
+    num_stars_last_5_hours_per_hour = (datapoints_last_5_hours_per_hour_oldest_newest_value - \
+        datapoints_last_5_hours_per_hour_oldest_oldest_value) / 5
+
+    # Print them in one line.
+    print()
+    print(f'{num_stars_last_hour:.0f} stars in the last hour, {num_stars_last_5_hours_per_hour:.0f} stars per hour on average')
+
     plt.plot(df['Time'], df['Stars'], '-o')
 
     plt.xlabel('Time')
