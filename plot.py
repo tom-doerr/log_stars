@@ -14,6 +14,27 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
 
+def get_num_stars_last_x_hours(hours):
+    df = pd.read_csv('stars.csv')
+
+    df['Time'] = pd.to_datetime(df['Time'])
+    hours_str = str(hours)
+
+    datapoints_last_x_hours = df[df['Time'] > datetime. now() - pd.Timedelta(hours_str + 'h')]
+    datapoints_last_x_hours_oldest = datapoints_last_x_hours['Time'].min()
+    # Get star value for the oldest datapoint.
+    datapoints_last_x_hours_oldest_value = datapoints_last_x_hours[
+        datapoints_last_x_hours['Time'] == datapoints_last_x_hours_oldest]['Stars'].iloc[0]
+
+    datapoints_last_x_hours_newest = datapoints_last_x_hours['Time'].max()
+    # Get star value for the newest datapoint.
+    datapoints_last_x_hours_newest_value = datapoints_last_x_hours[
+        datapoints_last_x_hours['Time'] == datapoints_last_x_hours_newest]['Stars'].iloc[0]
+
+    num_stars_last_x_hours = (datapoints_last_x_hours_newest_value - \
+        datapoints_last_x_hours_oldest_value) / hours
+
+    return num_stars_last_x_hours
 
 def plot_stars(data, filename=None):
     '''
@@ -27,39 +48,12 @@ def plot_stars(data, filename=None):
 
     df['Time'] = pd.to_datetime(df['Time'])
 
+    num_stars_last_hour = get_num_stars_last_x_hours(1)
+    num_stars_last_5_hours_per_hour = get_num_stars_last_x_hours(5)
 
-    datapoints_last_hour = df[df['Time'] > datetime. now() - pd.Timedelta('1h')]
-    datapoints_last_hour_oldest = datapoints_last_hour['Time'].min()
-    # Get star value for the oldest datapoint.
-    datapoints_last_hour_oldest_value = datapoints_last_hour[
-        datapoints_last_hour['Time'] == datapoints_last_hour_oldest]['Stars'].iloc[0]
-
-    datapoints_last_hour_newest = datapoints_last_hour['Time'].max()
-    # Get star value for the newest datapoint.
-    datapoints_last_hour_newest_value = datapoints_last_hour[
-        datapoints_last_hour['Time'] == datapoints_last_hour_newest]['Stars'].iloc[0]
-
-    num_stars_last_hour = datapoints_last_hour_newest_value - \
-        datapoints_last_hour_oldest_value
-
-
-    datapoints_last_5_hours_per_hour_oldest = df[df['Time'] > datetime. now() - pd.Timedelta('5h')]
-    datapoints_last_5_hours_per_hour_oldest_oldest = datapoints_last_5_hours_per_hour_oldest['Time'].min()
-    # Get star value for the oldest datapoint.
-    datapoints_last_5_hours_per_hour_oldest_oldest_value = datapoints_last_5_hours_per_hour_oldest[
-        datapoints_last_5_hours_per_hour_oldest['Time'] == datapoints_last_5_hours_per_hour_oldest_oldest]['Stars'].iloc[0]
-
-    datapoints_last_5_hours_per_hour_oldest_newest = datapoints_last_5_hours_per_hour_oldest['Time'].max()
-    # Get star value for the newest datapoint.
-    datapoints_last_5_hours_per_hour_oldest_newest_value = datapoints_last_5_hours_per_hour_oldest[
-        datapoints_last_5_hours_per_hour_oldest['Time'] == datapoints_last_5_hours_per_hour_oldest_newest]['Stars'].iloc[0]
-
-    num_stars_last_5_hours_per_hour = (datapoints_last_5_hours_per_hour_oldest_newest_value - \
-        datapoints_last_5_hours_per_hour_oldest_oldest_value) / 5
-
-    # Print them in one line.
-    print()
     print(f'{num_stars_last_hour:.0f} stars in the last hour, {num_stars_last_5_hours_per_hour:.0f} stars per hour on average')
+
+
 
     plt.plot(df['Time'], df['Stars'], '-o')
 
