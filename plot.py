@@ -33,6 +33,9 @@ def plot_stars(data, filename=None):
     plt.ylabel('Stars')
     plt.title('Stars over Time')
 
+    # Rotate the x labels.
+    plt.xticks(rotation=45)
+
     if filename:
         plt.savefig(filename)
     else:
