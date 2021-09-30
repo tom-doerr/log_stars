@@ -13,6 +13,7 @@ matplotlib.use("Qt5agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
+import argparse
 
 def get_num_stars_last_x_hours(hours):
     df = pd.read_csv('stars.csv')
@@ -44,7 +45,10 @@ def plot_stars(data, filename=None):
     Time,Repo,Stars
     2021-09-27 01:30:41.780979,tom-doerr/zsh_codex,156
     '''
+    args = get_args()
     df = pd.read_csv(data)
+    # Filter the df so only data after start is included.
+    df = df[df['Time'] > args.start]
 
     df['Time'] = pd.to_datetime(df['Time'])
 
@@ -73,6 +77,12 @@ def plot_stars(data, filename=None):
     else:
         plt.show()
 
+def get_args():
+    parser = argparse.ArgumentParser()
+    # Get the start date from which to plot.
+    parser.add_argument("-s", "--start", help="Start date to plot from.")
+
+    return parser.parse_args()
 
 if __name__ == '__main__':
     plot_stars('stars.csv', 'stars.png')
