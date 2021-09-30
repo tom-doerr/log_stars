@@ -72,6 +72,12 @@ def plot_stars(data, filename=None):
     # Rotate the x labels.
     plt.xticks(rotation=45)
 
+    # Draw vertical lines whenever a new day starts.
+    plt.axvline(x=df['Time'].iloc[0], linestyle='--', color='#000000')
+    for i in range(1, len(df['Time'])):
+        if df['Time'].iloc[i].day != df['Time'].iloc[i - 1].day:
+            plt.axvline(x=df['Time'].iloc[i], linestyle='--', color='#000000')
+
     if filename:
         plt.savefig(filename)
     else:
