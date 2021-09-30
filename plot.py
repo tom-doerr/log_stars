@@ -54,12 +54,14 @@ def plot_stars(data, filename=None):
 
     num_stars_last_hour = get_num_stars_last_x_hours(1)
     num_stars_last_5_hours_per_hour = get_num_stars_last_x_hours(5)
+    num_stars_last_24h = get_num_stars_last_x_hours(24) * 24
     current_num_stars = df['Stars'].iloc[-1]
 
     print()
     # print all with the number at the beginning and the label at the end.
     print(f"{num_stars_last_hour:.1f} stars/hour")
     print(f"{num_stars_last_5_hours_per_hour:.1f} stars/hour over five hours")
+    print(f"{num_stars_last_24h:.0f} stars over 24 hours")
     print(f"{current_num_stars:.0f} stars now")
 
 
