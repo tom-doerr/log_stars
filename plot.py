@@ -49,7 +49,13 @@ def plot_stars(data, filename=None):
     args = get_args()
     df = pd.read_csv(data)
     # Filter the df so only data after start is included.
-    df = df[df['Time'] > args.start]
+    if args.start:
+        df = df[df['Time'] > args.start]
+
+    # Filter for repo.
+    if args.repo:
+        df = df[df['Repo'] == args.repo]
+
 
     df['Time'] = pd.to_datetime(df['Time'])
 
@@ -99,6 +105,8 @@ def get_args():
     parser = argparse.ArgumentParser()
     # Get the start date from which to plot.
     parser.add_argument("-s", "--start", help="Start date to plot from.")
+    # Add option to filter for repo.
+    parser.add_argument("-r", "--repo", help="Name of repo to filter for.")
 
     return parser.parse_args()
 
