@@ -37,6 +37,7 @@ def get_num_stars_last_x_hours(hours):
 
     return num_stars_last_x_hours
 
+
 def plot_stars(data, filename=None):
     '''
     Plots the data from the file stars.csv using matplotlib.
@@ -63,6 +64,15 @@ def plot_stars(data, filename=None):
     print(f"{num_stars_last_5_hours_per_hour:.1f} stars/hour over five hours")
     print(f"{num_stars_last_24h:.0f} stars over 24 hours")
     print(f"{current_num_stars:.0f} stars now")
+
+    if False:
+        # Print the number of stars gotten each day.
+        day_stars_gotten_dict = get_num_stars_gotten_for_each_day(df)
+        for key, value in day_stars_gotten_dict.items():
+            print(f"{value:.0f} stars on {key}")
+
+   
+
 
 
     plt.plot(df['Time'], df['Stars'], '-o')
