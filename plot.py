@@ -15,8 +15,7 @@ import pandas as pd
 from datetime import datetime
 import argparse
 
-def get_num_stars_last_x_hours(hours):
-    df = pd.read_csv('stars.csv')
+def get_num_stars_last_x_hours(hours, df):
 
     df['Time'] = pd.to_datetime(df['Time'])
     hours_str = str(hours)
@@ -59,9 +58,9 @@ def plot_stars(data, filename=None):
 
     df['Time'] = pd.to_datetime(df['Time'])
 
-    num_stars_last_hour = get_num_stars_last_x_hours(1)
-    num_stars_last_5_hours_per_hour = get_num_stars_last_x_hours(5)
-    num_stars_last_24h = get_num_stars_last_x_hours(24) * 24
+    num_stars_last_hour = get_num_stars_last_x_hours(1, df)
+    num_stars_last_5_hours_per_hour = get_num_stars_last_x_hours(5, df)
+    num_stars_last_24h = get_num_stars_last_x_hours(24, df) * 24
     current_num_stars = df['Stars'].iloc[-1]
 
     print()
